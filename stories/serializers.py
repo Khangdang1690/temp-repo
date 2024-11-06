@@ -2,5 +2,6 @@ from rest_framework import serializers
 from .models import Story
 
 class StorySerializer(serializers.ModelSerializer):
-  model = Story
-  fields = '__all__'
+    class Meta:
+        model = Story
+        fields = '__all__'

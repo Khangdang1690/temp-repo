@@ -1,12 +1,21 @@
 from django.db import models
 from datetime import datetime
 
-# Create your models here.
+#A Tag model for better tagging (it is optional)
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
 class Story(models.Model):
-  title = models.CharField(max_length=100)
-  content = models.TextField()
-  image = models.ImageField()
-  tags = models.CharField(max_length=100)
-  latitude = models.DecimalField(max_digits=9, decimal_places=6)
-  longtitude = models.DecimalField(max_digits=9,decimal_places=6)
-  created_at = models.DateTimeField(default=datetime.now, blank=True)
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    image = models.ImageField(upload_to='story_images/')
+    tags = models.ManyToManyField(Tag)  # If using predefined tags
+    latitude = models.DecimalField(max_digits=9, decimal_places=6)
+    longitude = models.DecimalField(max_digits=9, decimal_places=6)  
+    created_at = models.DateTimeField(auto_now_add=True)  # Automatically set on creation
+
+    def __str__(self):
+        return f"Story: {self.title}, Location: ({self.latitude}, {self.longitude})"
