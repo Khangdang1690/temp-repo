@@ -18,8 +18,26 @@
             <ul class="nav-links">
                 <li><a href="{% url 'landingpage' %}">Home</a></li>
                 <li><a href="{% url 'index' %}">Explore Stories</a></li>
+                {% if user.is_authenticated %}
                 <li><a href="{% url 'submit_story' %}">Submit a Story</a></li>
-                <li><button class="login-btn" onclick="firebaseLogin()">Login</button></li>
+                <li>
+                    <form class="logout-btn" action="{% url 'users:logout' %}" method="post">
+                        {% csrf_token %}
+                        <button class="logout-btn">Logout</button>
+                    </form>
+                </li>
+                {% else %}
+                <li>
+                    <form action="{% url 'users:login' %}" method="get">
+                        <button class="login-btn">Login</button>
+                    </form>
+                </li>
+                <li>
+                    <form action="{% url 'users:register' %}" method="get">
+                        <button class="register-btn">Register</button>
+                    </form>
+                </li>
+                {% endif %}
             </ul>
         </nav>
     </header>

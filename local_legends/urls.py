@@ -8,7 +8,7 @@ urlpatterns = [
     path('', views.landingpage, name='landingpage'),         # Matches {% url 'landingpage' %}
     path('stories/', include('stories.urls')),  # Include your 'stories' app URLs
     path('explore/', views.index, name='index'),       # Matches {% url 'index' %}
-    path('users/', include('users.urls'))
+    path('users/', include(('users.urls', 'users'), namespace='users')),
 ]
 
 #serve media files during development
