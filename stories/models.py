@@ -19,3 +19,11 @@ class Story(models.Model):
 
     def __str__(self):
         return f"Story: {self.title}, Location: ({self.latitude}, {self.longitude})"
+
+class Comment(models.Model):
+    story = models.ForeignKey(Story, related_name='comments', on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Comment on {self.story.title}"

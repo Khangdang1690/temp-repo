@@ -2,16 +2,37 @@
 
 {% block content %}
 <div class="story-details-container">
-    <h2 id="story-title">Story Title</h2>
-    <p id="story-description">Story description goes here...</p>
+    <h2 id="story-title">{{ story.title }}</h2>
+    <p id="story-description">{{ story.content }}</p>
+
+    <div class="story-image">
+        {% if story.image %}
+            <img src="{{ story.image.url }}" alt="{{ story.title }}">
+        {% else %}
+            <p>No image available.</p>
+        {% endif %}
+    </div>
+
+    <h3>Tags:</h3>
+    <ul>
+        {% for tag in story.tags.all %}
+            <li>{{ tag.name }}</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Location:</h3>
+    <p>Latitude: {{ story.latitude }}, Longitude: {{ story.longitude }}</p>
 
     <h3>Comments</h3>
     <ul id="comments-list">
-        <!-- Comments will be added dynamically -->
+        {% for comment in story.comments.all %}
+            <li>{{ comment.content }} - {{ comment.created_at }}</li>
+        {% endfor %}
     </ul>
 
-    <form id="comment-form">
-        <textarea id="comment-input" placeholder="Add a comment..." rows="4"></textarea>
+    <form id="comment-form" method="POST" action="{% url 'add_comment' story.id %}">
+        {% csrf_token %}
+        <textarea id="comment-input" name="content" placeholder="Add a comment..." rows="4"></textarea>
         <button type="submit">Post Comment</button>
     </form>
 
@@ -22,52 +43,3 @@
 {% block extra_js %}
 <script src="{% static 'js/story_deets.js' %}"></script>
 {% endblock %}
-
-<script>
-    // Sample stories for demonstration (this would normally come from the backend)
-const stories = [
-    {
-        id: 1,
-        title: "The Haunted Bridge",
-        description: "A chilling tale of strange sightings on foggy nights.",
-        lat: 51.5,
-        lng: -0.09,
-        comments: [
-            "I’ve heard this one before – creepy!",
-            "My grandma swears she saw a ghost there."
-        ]
-    },
-    {
-        id: 2,
-        title: "Mysterious Lights",
-        description: "Witnesses have reported eerie lights appearing over the hills.",
-        lat: 51.51,
-        lng: -0.1,
-        comments: [
-            "Saw it once. It was mesmerizing.",
-            "Maybe it’s aliens?"
-        ]
-    }
-];
-
-// Function to add markers with popups for each story
-stories.forEach(story => {
-    const marker = L.marker([story.lat, story.lng]).addTo(map);
-    const popupContent = `
-        <div class="popup">
-            <h3>${story.title}</h3>
-            <p>${story.description}</p>
-            <button onclick="showComments(${story.id})">Comments</button>
-        </div>
-    `;
-    marker.bindPopup(popupContent);
-});
-
-// Function to display comments in an alert or modal
-function showComments(storyId) {
-    const story = stories.find(s => s.id === storyId);
-    const comments = story ? story.comments.join("\n") : "No comments yet!";
-    alert("Comments:\n" + comments);
-}
-
-</script>
