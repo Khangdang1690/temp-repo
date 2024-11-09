@@ -16,7 +16,7 @@ body {
     margin-right: 20px;
 }
 
-.explore-button, .login-btn, .logout-btn, .register-btn, .submit-btn {
+.explore-button, .login-btn, .logout-btn, .submit-btn {
     background-color: #FFAAA7;
     border: none;
     padding: 10px 20px;

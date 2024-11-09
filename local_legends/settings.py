@@ -13,6 +13,16 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+AUTH0_DOMAIN = os.getenv('AUTH0_DOMAIN')
+AUTH0_CLIENT_ID = os.getenv('AUTH0_CLIENT_ID')
+AUTH0_CLIENT_SECRET = os.getenv('AUTH0_CLIENT_SECRET')
+AUTH0_CALLBACK_URL = os.getenv('AUTH0_CALLBACK_URL')
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
